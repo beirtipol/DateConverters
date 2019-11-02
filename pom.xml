@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.beirtipol</groupId>
+	<artifactId>date-converters</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>Date Utilities</name>
+	<packaging>pom</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.scm.id>gitlab-ce</project.scm.id>
+		<junit.jupiter.version>5.5.2</junit.jupiter.version>
+		<spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+	</properties>
+
+	<scm>
+		<connection>scm:git:http://gitlab-ce/beirti/dates.git</connection>
+		<developerConnection>scm:git:http://gitlab-ce/beirti/dates.git</developerConnection>
+		<url>http://gitlab-ce/beirti/dates.git</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>local-release-local</id>
+			<url>http://ubuntu18:8081/artifactory/local-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>local-snapshot-local</id>
+			<url>http://ubuntu18:8081/artifactory/local-snapshot-local/</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Ensure compliance with JDK11 -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<generateBackupPoms>false</generateBackupPoms>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+					<compilerVersion>11</compilerVersion>
+					<release>11</release>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.0</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${junit.jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<modules>
+		<module>date-converters-core</module>
+		<module>date-converters-sample-extension</module>
+		<module>date-converters-core-tests</module>
+	</modules>
+</project>
