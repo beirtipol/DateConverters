@@ -4,11 +4,15 @@
 
 A library for providing conversion between a thing and another thing, specifically dates, but not restricted to that.
 
-## Why?
+## Why did you write it?
 
 I found myself working on a project that used every conceivable type of Date class, ranging from straight java.util.Calendar to joda Dates, a sprinkling of XMLGregorianCalendar for old JAXB implementations, an occasional usage of java.time.* and then some third-party closed-source libraries that had their own implementation of Dates.
 
 Our biggest problem was we had no consistent way to convert between all these types. There were many DateUtils, DatesUtils, XMLDateUtils but they all did things slightly differently.
+
+## Why would I use it?
+
+I'd guess you're here because you've also found yourself doing a lot of date conversions. I found that the easiest way to perform a big refactor was to try and get everything in to the same date api, whatever one you choose (obviously java.util.time.*) and the easy way to do that is to convert a few classes at a time, rather than going big bang. As you're able to autowire just a single 'Converters' class in, you can easily remove it as you replace the code with a more up to date api.
 
 ## How is it written?
 
