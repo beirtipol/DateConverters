@@ -1,7 +1,39 @@
-# DateConverters
-Library for providing conversion between any date types
+# FAQ
 
-See below for sample usage
+## What is this?
+
+A library for providing conversion between a thing and another thing, specifically dates, but not restricted to that.
+
+## Why?
+
+I found myself working on a project that used every conceivable type of Date class, ranging from straight java.util.Calendar to joda Dates, a sprinkling of XMLGregorianCalendar for old JAXB implementations, an occasional usage of java.time.* and then some third-party closed-source libraries that had their own implementation of Dates.
+
+Our biggest problem was we had no consistent way to convert between all these types. There were many DateUtils, DatesUtils, XMLDateUtils but they all did things slightly differently.
+
+## How is it written?
+
+I used Spring 5 and a bit of Spring Boot to provide simple autowiring. My first iterations of this depended on many interfaces and extensions of interfaces. If you wanted to write a converter for a new type, you were forced to write a converter between your new type and every other existing type. When you wanted to merge multiple type converters together, things got really messy.
+
+## How does it work?
+
+Simple! Out of the box, you get a converter for all core java 8+ Date types:
+
+* java.util.Date
+* java.sql.Date
+* java.sql.Timestamp
+* javax.xml.datatype.XMLGregorianCalendar
+* java.time.LocalDate
+* java.time.LocalDateTime
+* java.time.ZonedDateTime
+
+You just @Autowire an org.beirtipol.Converters in to your class and ask it to convert 'from' whatever type in to whatever type you want. Due to some magic, you get type-safe conversion and null-safety (if you give null, you get null, your problem).
+
+e.g.
+
+    // No casting, no type-safety warnings, just a result
+    LocalDate now = converters.from( ZonedDateTime.now(), LocalDate.class );
+
+Here's how you'd autowire a simple application. You can see a full example in the date-converters-sample-extension module.
 
     @SpringBootApplication
     @ComponentScan(basePackageClasses = { Converters.class })
@@ -24,3 +56,22 @@ See below for sample usage
             SpringApplication.run(DemoApplication.class, args);
         }
     }
+
+## What about Timezones?
+
+I'm glad you asked. If you asked, it means you probably know what you're doing already, which is a great start. TimeZone conversion is arbitrary at best. All of the core conversion classes will keep the 'Instant' where possible when converting between dates. i.e. if the 'from' and 'to' Class support a Timezone, they will represent the same point on the timeline. If however, you are converting from a timezoned object to a local object, the 'from' date is converted to UTC and then the timezone is stripped off. This may not be what you want to do, in which case you should provide your own implementation. More on that later.
+
+## How do I provide my own implementation of a converter?
+
+You need to write a method in a spring-annotated class (like @Component) which follows this signature:
+
+    @Bean
+    @Converter(from = SomeDateType.class, to = SomeOtherDateType.class)
+    public Function<SomeDateType, SomeOtherDateType> SomeDateTypeToSomeOtherDateType() {
+        return from -> //convert 'from' in to 'to';
+    }
+    
+The @Bean simply makes the method discoverable by Spring. The @Converter annotation allows the com.beirtipol.dates.Converter class to determine what the 'from' and 'to' types are so that it can index them and find a converter when you ask it to do a 'from'.
+
+## This @Converter stuff looks pretty generic, you could use it for things other than dates?
+Yeah, I could. I don't have a good use-case right now though! You should be able to provide any conversion you want though.
