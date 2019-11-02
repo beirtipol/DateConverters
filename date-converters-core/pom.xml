@@ -6,7 +6,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>date-converters-core</artifactId>
-	<name>Dates Core</name>
+	<name>Date Converters Core</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

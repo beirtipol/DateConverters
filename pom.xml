@@ -3,7 +3,7 @@
 	<groupId>com.beirtipol</groupId>
 	<artifactId>date-converters</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>Date Utilities</name>
+	<name>Date Converters Parent Project</name>
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

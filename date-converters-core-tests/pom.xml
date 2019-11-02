@@ -6,7 +6,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>date-converters-core-tests</artifactId>
-
+<name>Date Converters Core Tests</name>
 	<build>
 		<testSourceDirectory>${project.basedir}/src/main/java</testSourceDirectory>
 	</build>

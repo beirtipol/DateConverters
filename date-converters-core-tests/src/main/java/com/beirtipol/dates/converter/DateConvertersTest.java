@@ -34,6 +34,13 @@ import com.beirtipol.dates.Converters;
 import com.beirtipol.dates.ThreeTenDates;
 import com.beirtipol.dates.UtilDates;
 
+/**
+ * This class may be extended in order to easily test that your converter can convert from and to all supported code
+ * java Date types.
+ * 
+ * @author beirtipol@gmail.com
+ *
+ */
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith({ SpringExtension.class })
 @SpringBootTest

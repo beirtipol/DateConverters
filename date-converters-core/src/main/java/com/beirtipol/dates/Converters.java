@@ -12,11 +12,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
+import com.beirtipol.dates.converter.LocalDateConverters;
+import com.beirtipol.dates.converter.LocalDateTimeConverters;
+import com.beirtipol.dates.converter.SQLDateConverters;
+import com.beirtipol.dates.converter.TimestampConverters;
+import com.beirtipol.dates.converter.UtilDateConverters;
+import com.beirtipol.dates.converter.XMLDateConverters;
+import com.beirtipol.dates.converter.ZonedDateTimeConverters;
+
+/**
+ * {@link Converters} will gather all bean methods which declare the annotation {@link Converter} and index them by the
+ * 'from' and 'to' types declared in the annotation. It has a single useful method
+ * {@link Converters#from(Object, Class)} which allows passing in any {@link Object} along with the desired return type
+ * {@link Class} and will search for an appropriate {@link Converter} to apply the conversion.
+ * 
+ * A number of core {@link Converter} beans are provided by this project
+ * 
+ * @see LocalDateConverters
+ * @see LocalDateTimeConverters
+ * @see ZonedDateTimeConverters
+ * @see SQLDateConverters
+ * @see TimestampConverters
+ * @see UtilDateConverters
+ * @see XMLDateConverters
+ * 
+ * @author beirtipol@gmail.com
+ *
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
+@SpringBootConfiguration
+@ComponentScan
 @Component
 public class Converters implements BeanPostProcessor {
 	@Autowired
