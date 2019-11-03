@@ -30,6 +30,8 @@
 		<project.scm.id>github</project.scm.id>
 		<junit.jupiter.version>5.5.2</junit.jupiter.version>
 		<spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+		<jacoco.version>0.8.3</jacoco.version>
+		<surefire.version>3.0.0-M3</surefire.version>
 	</properties>
 
 	<scm>
@@ -74,7 +76,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.0</version>
+				<version>${surefire.version}</version>
+				<configuration>
+					<reportsDirectory>../target/surefire-reports</reportsDirectory>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -84,7 +92,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.3</version>
+				<version>${jacoco.version}</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -111,11 +119,7 @@
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<systemPropertyVariables>
-						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
-					</systemPropertyVariables>
-				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>
@@ -142,5 +146,6 @@
 		<module>date-converters-core</module>
 		<module>date-converters-sample-extension</module>
 		<module>date-converters-core-tests</module>
+		<module>date-converters-reporting</module>
 	</modules>
 </project>

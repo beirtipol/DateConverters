@@ -7,6 +7,7 @@
 	</parent>
 	<artifactId>date-converters-core</artifactId>
 	<name>Date Converters Core</name>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

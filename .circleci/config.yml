@@ -23,8 +23,10 @@ jobs:
       # run tests!
       - run: mvn integration-test
 
+      # Surefire reports are stored in the parent project to keep CircleCI happy
       - store_test_results:
-          path: date-converters-core-tests/target/surefire-reports
+          path: target/surefire-reports
 
+      # We keep the jacoco aggregated data here
       - store_artifacts:
-          path:  date-converters-core-tests/target
+          path:  date-converters-reporting/target/site/jacoco-aggregate
