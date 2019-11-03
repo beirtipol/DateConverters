@@ -18,7 +18,6 @@ import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.Converters;
 import com.beirtipol.dates.UtilDates;
 
-@SuppressWarnings("deprecation")
 @Component
 public class MyDateConverters {
 
@@ -106,19 +105,19 @@ public class MyDateConverters {
 	@Bean
 	@Converter(from = java.util.Date.class, to = MyDate.class)
 	public Function<Date, MyDate> UtilDateToMyDate() {
-		return from -> new MyDate(from.getYear() + UtilDates.YEAR_OFFSET, from.getMonth() + UtilDates.MONTH_OFFSET, from.getDate());
+		return from -> LocalDateToMyDate().apply(converters.from(from, LocalDate.class));
 	}
 
 	@Bean
 	@Converter(from = java.sql.Date.class, to = MyDate.class)
 	public Function<java.sql.Date, MyDate> SQLDateToMyDate() {
-		return from -> new MyDate(from.getYear() + UtilDates.YEAR_OFFSET, from.getMonth() + UtilDates.MONTH_OFFSET, from.getDate());
+		return from -> LocalDateToMyDate().apply(converters.from(from, LocalDate.class));
 	}
 
 	@Bean
 	@Converter(from = Timestamp.class, to = MyDate.class)
 	public Function<Timestamp, MyDate> SQLTimestampToMyDate() {
-		return from -> new MyDate(from.getYear() + UtilDates.YEAR_OFFSET, from.getMonth() + UtilDates.MONTH_OFFSET, from.getDate());
+		return from -> LocalDateToMyDate().apply(converters.from(from, LocalDate.class));
 	}
 
 	@Bean

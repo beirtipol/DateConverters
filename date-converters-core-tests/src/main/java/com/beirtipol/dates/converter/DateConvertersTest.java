@@ -9,11 +9,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import javax.xml.datatype.DatatypeFactory;
@@ -25,6 +22,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,158 +33,97 @@ import com.beirtipol.dates.ThreeTenDates;
 import com.beirtipol.dates.UtilDates;
 
 /**
- * This class may be extended in order to easily test that your converter can convert from and to all supported code
- * java Date types.
- * 
- * @author beirtipol@gmail.com
+ * In order to automatically generate tests for your own converters, you just need to sublcass this class, keep the same annotations, and override 'setup()' to add your own expected values.
  *
+ * @author beirtipol@gmail.com
  */
 @TestInstance(Lifecycle.PER_CLASS)
-@ExtendWith({ SpringExtension.class })
+@ExtendWith({SpringExtension.class})
 @SpringBootTest
 public class DateConvertersTest {
+    protected Map<Class<?>, Object> expectedResults = new HashMap<>();
 
-	private ZonedDateTime			expectedZonedDateTime;
-	private LocalDateTime			expectedLocalDateTime;
-	private LocalDate				expectedLocalDate;
-	private LocalTime				expectedLocalTime;
-	private Date					expectedUtilDate;
-	private XMLGregorianCalendar	expectedXMLDate;
-	private java.sql.Date			expectedSQLDate;
-	private Timestamp				expectedSQLTimestamp;
-	private Calendar				expectedGregorianCalendar;
+    @Autowired
+    protected Converters converters;
 
-	protected Map<Class<?>, Object>	expectedResults	= new HashMap<>();
+    private static DatatypeFactory dtFactory;
 
-	@Autowired
-	protected Converters			DATES;
+    @BeforeAll
+    private static void beforeClass() throws Exception {
+        dtFactory = DatatypeFactory.newInstance();
+    }
 
-	private static DatatypeFactory	dtFactory;
+    @BeforeEach
+    protected void setup() {
+		LocalDate  expectedLocalDate = LocalDate.of(2019, 9, 1);
+		LocalTime expectedLocalTime = LocalTime.of(0, 0);
+		LocalDateTime expectedLocalDateTime = LocalDateTime.of(expectedLocalDate, expectedLocalTime);
+		ZonedDateTime expectedZonedDateTime = expectedLocalDateTime.atZone(ThreeTenDates.UTC);
+		Calendar  expectedGregorianCalendar = GregorianCalendar.getInstance(UtilDates.UTC);
+        expectedGregorianCalendar.setTimeInMillis(expectedZonedDateTime.toInstant().toEpochMilli());
+		Date   expectedUtilDate = expectedGregorianCalendar.getTime();
+		XMLGregorianCalendar expectedXMLDate = dtFactory.newXMLGregorianCalendar(2019, 9, 1, 0, 0, 0, 0, 0);
+		java.sql.Date  expectedSQLDate = new java.sql.Date(expectedUtilDate.getTime());
+		Timestamp  expectedSQLTimestamp = new Timestamp(expectedUtilDate.getTime());
+        expectedResults.put(LocalDate.class, expectedLocalDate);
+        expectedResults.put(LocalDateTime.class, expectedLocalDateTime);
+        expectedResults.put(ZonedDateTime.class, expectedZonedDateTime);
+        expectedResults.put(Date.class, expectedUtilDate);
+        expectedResults.put(java.sql.Date.class, expectedSQLDate);
+        expectedResults.put(XMLGregorianCalendar.class, expectedXMLDate);
+        expectedResults.put(Timestamp.class, expectedSQLTimestamp);
+        expectedResults.put(Calendar.class, expectedGregorianCalendar);
+    }
 
-	@BeforeAll
-	private static void beforeClass() throws Exception {
-		dtFactory = DatatypeFactory.newInstance();
-	}
-
-	@BeforeEach
-	protected void setup() {
-		expectedLocalDate = LocalDate.of(2019, 9, 1);
-		expectedLocalTime = LocalTime.of(0, 0);
-		expectedLocalDateTime = LocalDateTime.of(expectedLocalDate, expectedLocalTime);
-		expectedZonedDateTime = expectedLocalDateTime.atZone(ThreeTenDates.UTC);
-		expectedGregorianCalendar = GregorianCalendar.getInstance(UtilDates.UTC);
-		expectedGregorianCalendar.setTimeInMillis(expectedZonedDateTime.toInstant().toEpochMilli());
-		expectedUtilDate = expectedGregorianCalendar.getTime();
-		expectedXMLDate = dtFactory.newXMLGregorianCalendar(2019, 9, 1, 0, 0, 0, 0, 0);
-		expectedSQLDate = new java.sql.Date(expectedUtilDate.getTime());
-		expectedSQLTimestamp = new Timestamp(expectedUtilDate.getTime());
-		expectedResults.put(LocalDate.class, expectedLocalDate);
-		expectedResults.put(LocalDateTime.class, expectedLocalDateTime);
-		expectedResults.put(ZonedDateTime.class, expectedZonedDateTime);
-		expectedResults.put(Date.class, expectedUtilDate);
-		expectedResults.put(java.sql.Date.class, expectedSQLDate);
-		expectedResults.put(XMLGregorianCalendar.class, expectedXMLDate);
-		expectedResults.put(Timestamp.class, expectedSQLTimestamp);
-		expectedResults.put(Calendar.class, expectedGregorianCalendar);
-	}
-
+	/**
+	 * @return a stream of the keys of expectedResults
+	 */
 	protected Stream<Class<?>> supportedClasses() {
-		return Stream.of(LocalDate.class, LocalDateTime.class, ZonedDateTime.class, java.util.Date.class, java.sql.Date.class, Timestamp.class, XMLGregorianCalendar.class, Calendar.class);
-	}
+		// setup() is not called before this provider is invoked when this test is subclassed
+    	setup();
+        return expectedResults.keySet().stream();
+    }
 
+	/**
+	 * @return all available system timezones. This could be overridden if required.
+	 */
 	protected Stream<String> systemTimeZones() {
-		return ZoneId.getAvailableZoneIds().stream();
-	}
+        return ZoneId.getAvailableZoneIds().stream();
+    }
 
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromLocalDateTime(Class<?> clazz) {
-		Object result = DATES.from(expectedLocalDateTime, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
+    /**
+     * @return a flatMapped stream of all expectedResult keys and values along with every System timezone
+     * to test conversion from all types to all types in all regions. At time of writing, this results in 38,336 tests! This might seem excessive,
+     * but during development, this helped to turn up some nasty edge cases in conversion between types where one has Timezone information
+     * and the other does not.
+     */
+    protected Stream<Arguments> testData() {
+        // setup() is not called before this provider is invoked
+        setup();
+        Supplier<Stream<Object>> valueStream = () -> expectedResults.values().stream();
+        Supplier<Stream<String>> timezoneStream = () -> systemTimeZones();
+        return expectedResults.keySet().stream()// Every Class
+                .flatMap(key -> valueStream.get().map(value -> Arguments.of(value, key)))// Every Value
+                .flatMap(arg -> timezoneStream.get().map(tz -> Arguments.of(arg.get()[0], arg.get()[1], tz)));// Every TimeZone
+    }
 
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromLocalDate(Class<?> clazz) {
-		Object result = DATES.from(expectedLocalDate, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
 
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromZonedDateTime(Class<?> clazz) {
-		Object result = DATES.from(expectedZonedDateTime, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
+    @ParameterizedTest(name = "Convert {0} to {1} when System is set to {2}")
+    @MethodSource("testData")
+    public void fromAnythingToAnything(Object from, Class<?> to, String systemTimezone) {
+        TimeZone.setDefault(TimeZone.getTimeZone(systemTimezone));
+        Object result = converters.from(from, to);
+        assertEquals(expectedResults.get(to), result, "Failed conversion from " + from.getClass());
+    }
 
+	/**
+	 * Verify that all classes handle null correctly. This should be a moot point as Converters is set up to fail-fast and
+	 * return null if found, but this will cover us in case of changes.
+	 * @param clazz attempted 'to' class for converting null
+	 */
 	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromUtilDate(Class<?> clazz) {
-		Object result = DATES.from(expectedUtilDate, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromTimestamp(Class<?> clazz) {
-		Object result = DATES.from(expectedSQLTimestamp, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromSqlDate(Class<?> clazz) {
-		Object result = DATES.from(expectedSQLDate, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromGregorianCalendar(Class<?> clazz) {
-		Object result = DATES.from(expectedGregorianCalendar, clazz);
-		assertEquals(expectedResults.get(clazz), result);
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromNullLocalDateTime_isNull(Class<?> clazz) {
-		assertNull(DATES.from((LocalDateTime) null, clazz));
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromNullUtilDate_isNull(Class<?> clazz) {
-		assertNull(DATES.from((LocalDateTime) null, clazz));
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromNullZonedDateTime_isNull(Class<?> clazz) {
-		assertNull(DATES.from((ZonedDateTime) null, clazz));
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromNullXMLDate_isNull(Class<?> clazz) {
-		assertNull(DATES.from((XMLGregorianCalendar) null, clazz));
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromNullSQLDate_isNull(Class<?> clazz) {
-		assertNull(DATES.from((java.sql.Date) null, clazz));
-	}
-
-	@ParameterizedTest
-	@MethodSource("supportedClasses")
-	public void fromNullSQLTimestamp_isNull(Class<?> clazz) {
-		assertNull(DATES.from((Timestamp) null, LocalDate.class));
-	}
-
-	@ParameterizedTest
-	@MethodSource("systemTimeZones")
-	public void fromZonedDateTime(String timeZone) {
-		ZonedDateTime zdt = ZonedDateTime.of(LocalDateTime.of(expectedLocalDate, expectedLocalTime), ZoneId.of(timeZone));
-		assertEquals(expectedLocalDate, DATES.from(zdt, LocalDate.class));
-	}
+    @MethodSource("supportedClasses")
+    public void fromNull_isNull(Class<?> clazz) {
+        assertNull(converters.from(null, clazz));
+    }
 }

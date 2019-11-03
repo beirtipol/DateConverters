@@ -16,9 +16,10 @@ import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.ThreeTenDates;
 import com.beirtipol.dates.UtilDates;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 /**
- * This class will default to 'UTC' where a TimeZone is not present in the source date.
- * 
+ *
  * @author beirtipol@gmail.com
  *
  */
@@ -26,8 +27,18 @@ import com.beirtipol.dates.UtilDates;
 public class CalendarConverters {
 	@Bean
 	@Converter(from = { Calendar.class, GregorianCalendar.class }, to = Calendar.class)
-	public Function<Calendar, Calendar> XMLDateToCalendar() {
+	public Function<Calendar, Calendar> CalendarToCalendar() {
 		return from -> from;
+	}
+
+	@Bean
+	@Converter(from = { XMLGregorianCalendar.class }, to = Calendar.class)
+	public Function<XMLGregorianCalendar, Calendar> XMLGregorianCalendarToCalendar() {
+		return from -> {
+			Calendar result = GregorianCalendar.getInstance(UtilDates.UTC);
+			result.setTimeInMillis(from.toGregorianCalendar().getTimeInMillis());
+			return result;
+		};
 	}
 
 	@Bean

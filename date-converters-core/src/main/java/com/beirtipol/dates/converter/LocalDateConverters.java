@@ -1,6 +1,7 @@
 package com.beirtipol.dates.converter;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -42,13 +43,13 @@ public class LocalDateConverters {
 	@Bean
 	@Converter(from = ZonedDateTime.class, to = LocalDate.class)
 	public Function<ZonedDateTime, LocalDate> ZonedDateTimeToLocalDate() {
-		return from -> from.toLocalDate();
+		return ZonedDateTime::toLocalDate;
 	}
 
 	@Bean
 	@Converter(from = LocalDateTime.class, to = LocalDate.class)
 	public Function<LocalDateTime, LocalDate> LocalDateTimeToLocalDate() {
-		return from -> from.toLocalDate();
+		return LocalDateTime::toLocalDate;
 	}
 
 	@Bean
@@ -66,7 +67,7 @@ public class LocalDateConverters {
 	@Bean
 	@Converter(from = java.sql.Date.class, to = LocalDate.class)
 	public Function<java.sql.Date, LocalDate> SQLDateToLocalDate() {
-		return from -> from.toLocalDate();
+		return from -> LocalDate.ofInstant(Instant.ofEpochMilli(from.getTime()), ThreeTenDates.UTC);
 	}
 
 	@Bean
