@@ -75,6 +75,8 @@ This project makes heavy use of JUnit 5 @ParameterisedTests. This allows the tes
 
 Tests are generated for each combination of 'from' Object, 'to' Class and Timezone in order to verify that converting works in the same way regardless of what timezone you are in. Last time I checked, **38,344** Unit tests were generated to run across all these iterations. While a sheer number of tests doesn't guarantee that this code is perfect, it does mean that each line is hit thousands of times in different ways to try all known combinations of state.  
 
+Jacoco is set up to check coverage across all implementations of converters. Other than the odd bit of Exception Handling and unused hashCode(), it's guaranteed to have 100% coverage. I'd like to say you can view the results on the project's [CircleCI](https://app.circleci.com/github/beirtipol/date-converters/pipelines), but I haven't yet managed to get the jacoco data published in an easily-viewed format.
+
 ## How do I provide my own implementation of a converter?
 
 You need to write a method in a spring-annotated class (like @Component) which follows this signature:
