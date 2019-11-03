@@ -25,3 +25,6 @@ jobs:
 
       - store_test_results:
           path: date-converters-core-tests/target/surefire-reports
+
+      - store_artifacts:
+          path:  date-converters-core-tests/target
