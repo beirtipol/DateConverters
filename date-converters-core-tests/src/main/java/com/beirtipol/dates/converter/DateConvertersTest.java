@@ -54,6 +54,7 @@ public class DateConvertersTest {
 	private XMLGregorianCalendar	expectedXMLDate;
 	private java.sql.Date			expectedSQLDate;
 	private Timestamp				expectedSQLTimestamp;
+	private Calendar				expectedGregorianCalendar;
 
 	protected Map<Class<?>, Object>	expectedResults	= new HashMap<>();
 
@@ -73,9 +74,9 @@ public class DateConvertersTest {
 		expectedLocalTime = LocalTime.of(0, 0);
 		expectedLocalDateTime = LocalDateTime.of(expectedLocalDate, expectedLocalTime);
 		expectedZonedDateTime = expectedLocalDateTime.atZone(ThreeTenDates.UTC);
-		GregorianCalendar expectedUtilDateCalendar = new GregorianCalendar(2019, Calendar.SEPTEMBER, 1);
-		expectedUtilDateCalendar.setTimeZone(UtilDates.UTC);
-		expectedUtilDate = expectedUtilDateCalendar.getTime();
+		expectedGregorianCalendar = GregorianCalendar.getInstance(UtilDates.UTC);
+		expectedGregorianCalendar.setTimeInMillis(expectedZonedDateTime.toInstant().toEpochMilli());
+		expectedUtilDate = expectedGregorianCalendar.getTime();
 		expectedXMLDate = dtFactory.newXMLGregorianCalendar(2019, 9, 1, 0, 0, 0, 0, 0);
 		expectedSQLDate = new java.sql.Date(expectedUtilDate.getTime());
 		expectedSQLTimestamp = new Timestamp(expectedUtilDate.getTime());
@@ -86,10 +87,11 @@ public class DateConvertersTest {
 		expectedResults.put(java.sql.Date.class, expectedSQLDate);
 		expectedResults.put(XMLGregorianCalendar.class, expectedXMLDate);
 		expectedResults.put(Timestamp.class, expectedSQLTimestamp);
+		expectedResults.put(Calendar.class, expectedGregorianCalendar);
 	}
 
 	protected Stream<Class<?>> supportedClasses() {
-		return Stream.of(LocalDate.class, LocalDateTime.class, ZonedDateTime.class, java.util.Date.class, java.sql.Date.class, Timestamp.class, XMLGregorianCalendar.class);
+		return Stream.of(LocalDate.class, LocalDateTime.class, ZonedDateTime.class, java.util.Date.class, java.sql.Date.class, Timestamp.class, XMLGregorianCalendar.class, Calendar.class);
 	}
 
 	protected Stream<String> systemTimeZones() {
@@ -128,6 +130,20 @@ public class DateConvertersTest {
 	@MethodSource("supportedClasses")
 	public void fromTimestamp(Class<?> clazz) {
 		Object result = DATES.from(expectedSQLTimestamp, clazz);
+		assertEquals(expectedResults.get(clazz), result);
+	}
+
+	@ParameterizedTest
+	@MethodSource("supportedClasses")
+	public void fromSqlDate(Class<?> clazz) {
+		Object result = DATES.from(expectedSQLDate, clazz);
+		assertEquals(expectedResults.get(clazz), result);
+	}
+
+	@ParameterizedTest
+	@MethodSource("supportedClasses")
+	public void fromGregorianCalendar(Class<?> clazz) {
+		Object result = DATES.from(expectedGregorianCalendar, clazz);
 		assertEquals(expectedResults.get(clazz), result);
 	}
 

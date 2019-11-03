@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -62,8 +63,20 @@ public class MyDateConverters {
 
 	@Bean
 	@Converter(from = MyDate.class, to = Timestamp.class)
-	public Function<MyDate, Timestamp> MyDateToSQLTimestame() {
+	public Function<MyDate, Timestamp> MyDateToSQLTimestamp() {
 		return from -> converters.from(MyDateToLocalDate().apply(from), Timestamp.class);
+	}
+
+	@Bean
+	@Converter(from = MyDate.class, to = Calendar.class)
+	public Function<MyDate, Calendar> MyDateToCalendar() {
+		return from -> converters.from(MyDateToLocalDate().apply(from), Calendar.class);
+	}
+
+	@Bean
+	@Converter(from = Calendar.class, to = MyDate.class)
+	public Function<Calendar, MyDate> CalendarToMyDate() {
+		return from -> LocalDateToMyDate().apply(converters.from(from, LocalDate.class));
 	}
 
 	@Bean
@@ -99,7 +112,7 @@ public class MyDateConverters {
 	@Bean
 	@Converter(from = java.sql.Date.class, to = MyDate.class)
 	public Function<java.sql.Date, MyDate> SQLDateToMyDate() {
-		return from -> new MyDate(from.getYear(), from.getMonth(), from.getDay());
+		return from -> new MyDate(from.getYear() + UtilDates.YEAR_OFFSET, from.getMonth() + UtilDates.MONTH_OFFSET, from.getDate());
 	}
 
 	@Bean

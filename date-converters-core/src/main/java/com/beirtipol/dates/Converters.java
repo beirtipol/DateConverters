@@ -1,9 +1,12 @@
 package com.beirtipol.dates;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -20,8 +23,6 @@ import org.springframework.util.MultiValueMap;
 
 import com.beirtipol.dates.converter.LocalDateConverters;
 import com.beirtipol.dates.converter.LocalDateTimeConverters;
-import com.beirtipol.dates.converter.SQLDateConverters;
-import com.beirtipol.dates.converter.TimestampConverters;
 import com.beirtipol.dates.converter.UtilDateConverters;
 import com.beirtipol.dates.converter.XMLDateConverters;
 import com.beirtipol.dates.converter.ZonedDateTimeConverters;
@@ -37,8 +38,6 @@ import com.beirtipol.dates.converter.ZonedDateTimeConverters;
  * @see LocalDateConverters
  * @see LocalDateTimeConverters
  * @see ZonedDateTimeConverters
- * @see SQLDateConverters
- * @see TimestampConverters
  * @see UtilDateConverters
  * @see XMLDateConverters
  * 
@@ -50,8 +49,9 @@ import com.beirtipol.dates.converter.ZonedDateTimeConverters;
 @ComponentScan
 @Component
 public class Converters implements BeanPostProcessor {
+	private static final Logger			LOG			= LoggerFactory.getLogger(Converters.class);
 	@Autowired
-	BeanFactory							beanFactory;
+	private BeanFactory					beanFactory;
 
 	private Map<ConverterKey, Function>	converters	= new HashMap<>();
 
@@ -66,10 +66,12 @@ public class Converters implements BeanPostProcessor {
 					String annotationType = Converter.class.getName();
 					if (beanMethod.isAnnotated(annotationType)) {
 						MultiValueMap<String, Object> attribs = beanMethod.getAllAnnotationAttributes(annotationType);
-						Class<?> from = (Class<?>) attribs.get("from").get(0);
+						Class<?>[] froms = (Class<?>[]) attribs.get("from").get(0);
 						Class<?> to = (Class<?>) attribs.get("to").get(0);
-						ConverterKey key = new ConverterKey(from, to);
-						converters.put(key, (Function) bean);
+						Arrays.stream(froms).forEach(from -> {
+							ConverterKey key = new ConverterKey(from, to);
+							converters.put(key, (Function) bean);
+						});
 					}
 				}
 			}
@@ -82,12 +84,28 @@ public class Converters implements BeanPostProcessor {
 		if (from == null) {
 			return null;
 		}
-		ConverterKey key = new ConverterKey(from.getClass(), to);
-		Function converter = converters.get(key);
+
+		// In the case of java.util.Calendar, we may not have created converters for all types.
+		Class<?> fromClass = from.getClass();
+		Function converter = getConverter(fromClass, to);
+		while (converter == null && fromClass.getSuperclass() != Object.class) {
+			fromClass = fromClass.getSuperclass();
+			converter = getConverter(fromClass, to);
+		}
 		if (converter == null) {
 			throw new NoSuchBeanDefinitionException(to, String.format("No bean available to convert from %s to %s", from.getClass(), to));
 		}
+		if (fromClass != from.getClass()) {
+			LOG.warn(String.format("No direct converter found between %s and %s. Attempting to convert from %s to %s instead.", from.getClass(), to, fromClass, to));
+		}
 		return (T) converter.apply(from);
+	}
+
+	private <T> Function getConverter(Class<?> from, Class<T> to) {
+		Function converter;
+		ConverterKey key = new ConverterKey(from, to);
+		converter = converters.get(key);
+		return converter;
 	}
 
 	@Override

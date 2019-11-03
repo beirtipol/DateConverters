@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.function.Function;
@@ -72,6 +73,16 @@ public class XMLDateConverters {
 	@Converter(from = java.util.Date.class, to = XMLGregorianCalendar.class)
 	public Function<Date, XMLGregorianCalendar> UtilDateToXMLGregorianCalendar() {
 		return from -> dt.newXMLGregorianCalendar(GregorianCalendar.from(zonedDateTimeConverter.UtilDateToZonedDateTime().apply(from)));
+	}
+
+	@Bean
+	@Converter(from = { Calendar.class, GregorianCalendar.class }, to = XMLGregorianCalendar.class)
+	public Function<Calendar, XMLGregorianCalendar> CalendarToXMLGregorianCalendar() {
+		return from -> {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(from.getTime());
+			return dt.newXMLGregorianCalendar(cal);
+		};
 	}
 
 	@Bean

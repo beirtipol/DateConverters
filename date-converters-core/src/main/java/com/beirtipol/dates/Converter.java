@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Converter {
-	public Class<?> from();
+	public Class<?>[] from();
 
 	public Class<?> to();
 }

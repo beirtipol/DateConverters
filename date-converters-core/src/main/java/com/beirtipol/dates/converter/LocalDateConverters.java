@@ -4,7 +4,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.function.Function;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -52,6 +54,12 @@ public class LocalDateConverters {
 	@Bean
 	@Converter(from = java.util.Date.class, to = LocalDate.class)
 	public Function<Date, LocalDate> UtilDateToLocalDate() {
+		return from -> from.toInstant().atZone(ThreeTenDates.UTC).toLocalDate();
+	}
+
+	@Bean
+	@Converter(from = { Calendar.class, GregorianCalendar.class }, to = LocalDate.class)
+	public Function<Calendar, LocalDate> CalendarToLocalDate() {
 		return from -> from.toInstant().atZone(ThreeTenDates.UTC).toLocalDate();
 	}
 

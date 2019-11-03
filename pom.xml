@@ -2,33 +2,51 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.beirtipol</groupId>
 	<artifactId>date-converters</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0-BETA</version>
 	<name>Date Converters Parent Project</name>
+	<description>Parent project for all Date Converters modules. Provides standard maven dependency/distribution management.</description>
+	<url>https://github.com/beirtipol/date-converters</url>
 	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License v3.0</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Beirti O'Nunain</name>
+			<email>beirtipol@gmail.com</email>
+			<organization>Private</organization>
+			<organizationUrl>https://github.com/beirtipol</organizationUrl>
+		</developer>
+	</developers>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.scm.id>gitlab-ce</project.scm.id>
+		<project.scm.id>github</project.scm.id>
 		<junit.jupiter.version>5.5.2</junit.jupiter.version>
 		<spring.boot.version>2.2.0.RELEASE</spring.boot.version>
 	</properties>
 
 	<scm>
-		<connection>scm:git:http://gitlab-ce/beirti/dates.git</connection>
-		<developerConnection>scm:git:http://gitlab-ce/beirti/dates.git</developerConnection>
-		<url>http://gitlab-ce/beirti/dates.git</url>
+		<connection>scm:git:https://github.com/beirtipol/date-converters.git</connection>
+		<developerConnection>scm:git:https://github.com/beirtipol/date-converters.git</developerConnection>
+		<url>https://github.com/beirtipol/date-converters.git</url>
 	</scm>
 
 	<distributionManagement>
-		<repository>
-			<id>local-release-local</id>
-			<url>http://ubuntu18:8081/artifactory/local-release-local</url>
-		</repository>
 		<snapshotRepository>
-			<id>local-snapshot-local</id>
-			<url>http://ubuntu18:8081/artifactory/local-snapshot-local/</url>
-			<uniqueVersion>false</uniqueVersion>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 
 	<build>
