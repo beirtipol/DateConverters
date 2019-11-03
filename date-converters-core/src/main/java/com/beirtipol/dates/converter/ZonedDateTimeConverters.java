@@ -1,10 +1,7 @@
 package com.beirtipol.dates.converter;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,7 +17,8 @@ import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.ThreeTenDates;
 
 /**
- * All conversions are done through UTC.
+ * This always converts to a {@link ZonedDateTime} which is set to UTC, allowing you to convert it to the TimeZone of
+ * your choosing by simply calling {@link ZonedDateTime#withZoneSameInstant(ZoneId)}
  *
  * @author beirtipol@gmail.com
  */

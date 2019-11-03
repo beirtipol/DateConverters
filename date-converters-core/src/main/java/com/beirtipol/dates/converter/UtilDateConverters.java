@@ -18,8 +18,8 @@ import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.ThreeTenDates;
 
 /**
- * This contains conversions for java.util.Date, java.sql.Date and java.sql.Timetamp as they share a hierarchy and some
- * common code
+ * This contains conversions for {@link java.util.Date}, {@link java.sql.Date} and {@link Timestamp} as they share a
+ * hierarchy and some common code
  * 
  * @author beirtipol@gmail.com
  *

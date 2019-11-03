@@ -23,7 +23,7 @@ import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.ThreeTenDates;
 
 /**
- * This class will default to 'UTC' where a TimeZone is not present in the source date.
+ * Converters for {@link XMLGregorianCalendar}. I despise this class almost as much as the core {@link Calendar}
  * 
  * @author beirtipol@gmail.com
  *

@@ -1,5 +1,8 @@
 package com.beirtipol.dates;
 
+/**
+ * Simple POJO for indexing all available conversion pairs in the {@link Converters} {@link org.springframework.beans.factory.config.BeanPostProcessor}
+ */
 public class ConverterKey {
 	private final Class<?>	from;
 	private final Class<?>	to;
