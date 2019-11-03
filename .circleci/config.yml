@@ -21,7 +21,7 @@ jobs:
       - checkout
 
       # run tests!
-      - run: mvn integration-test
+      - run: mvn integration-test surefire-report:report -Daggregate=true
 
       - store_test_results:
           path: target/surefire-reports
