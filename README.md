@@ -65,6 +65,10 @@ Here's how you'd autowire a simple application. You can see a full example in th
 
 I'm glad you asked. If you asked, it means you probably know what you're doing already, which is a great start. TimeZone conversion is arbitrary at best. All of the core conversion classes will keep the 'Instant' where possible when converting between dates. i.e. if the 'from' and 'to' Class support a Timezone, they will represent the same point on the timeline. If however, you are converting from a timezoned object to a local object, the 'from' date is converted to UTC and then the timezone is stripped off. This may not be what you want to do, in which case you should provide your own implementation. More on that later.
 
+## What about tests?
+
+This project makes heavy use of JUnit 5 @ParameterisedTests. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.  
+
 ## How do I provide my own implementation of a converter?
 
 You need to write a method in a spring-annotated class (like @Component) which follows this signature:
