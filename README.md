@@ -73,7 +73,7 @@ I'm glad you asked. If you asked, it means you probably know what you're doing a
 
 This project makes heavy use of JUnit 5 @ParameterisedTests. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.
 
-Tests are generated for each combination of 'from' Object, 'to' Class and Timezone in order to verify that converting works in the same way regardless of what timezone you are in. Last time I checked, 38,344 Unit tests were generated to run across all these iterations. While a sheer number of tests doesn't guarantee that this code is perfect, it does mean that each line is hit thousands of times in different ways to try all known combinations of state.  
+Tests are generated for each combination of 'from' Object, 'to' Class and Timezone in order to verify that converting works in the same way regardless of what timezone you are in. Last time I checked, **38,344** Unit tests were generated to run across all these iterations. While a sheer number of tests doesn't guarantee that this code is perfect, it does mean that each line is hit thousands of times in different ways to try all known combinations of state.  
 
 ## How do I provide my own implementation of a converter?
 
