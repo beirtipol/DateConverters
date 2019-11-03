@@ -14,6 +14,10 @@ Our biggest problem was we had no consistent way to convert between all these ty
 
 I'd guess you're here because you've also found yourself doing a lot of date conversions. I found that the easiest way to perform a big refactor was to try and get everything in to the same date api, whatever one you choose (obviously java.util.time.*) and the easy way to do that is to convert a few classes at a time, rather than going big bang. As you're able to autowire just a single 'Converters' class in, you can easily remove it as you replace the code with a more up to date api.
 
+## How do I use it?
+
+Currently awaiting approval by Sonatype so that it can be published to maven central. For now, you can just download and run 'mvn install' to deploy to your own local repository. You only need depend on 'date-converters-core'.
+
 ## How is it written?
 
 I used Spring 5 and a bit of Spring Boot to provide simple autowiring. My first iterations of this depended on many interfaces and extensions of interfaces. If you wanted to write a converter for a new type, you were forced to write a converter between your new type and every other existing type. When you wanted to merge multiple type converters together, things got really messy.
