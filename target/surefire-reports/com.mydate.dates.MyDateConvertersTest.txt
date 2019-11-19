@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mydate.dates.MyDateConvertersTest
+-------------------------------------------------------------------------------
+Tests run: 48528, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 30.544 s - in com.mydate.dates.MyDateConvertersTest
