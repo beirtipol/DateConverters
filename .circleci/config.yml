@@ -21,7 +21,7 @@ jobs:
       - checkout
 
       # run tests!
-      - run: mvn integration-test
+      - run: mvn integration-test validate
 
       # Surefire reports are stored in the parent project to keep CircleCI happy
       - store_test_results:
