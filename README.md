@@ -24,6 +24,7 @@ Just add a dependency on date-converters-core in your pom.xml/gradle build file.
         <version>1.0-RELEASE</version>
     </dependency>
     
+This project is built using JDK11 but the code is intended to be compatible with JDK8 if you're stuck unable to upgrade just yet so you can download the source and redeploy your own version to your local repository.
 
 ## How does it work?
 
