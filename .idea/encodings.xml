@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-core-tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-excel" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-reporting" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-sample-extension" charset="UTF-8" />
   </component>
