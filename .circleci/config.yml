@@ -15,13 +15,13 @@ jobs:
 
     dependencies:
       override: 
-      - mvn install -DskipTests   
+      - mvn install -DskipTests -Dmaven.javadoc.skip=true
 
     steps:
       - checkout
 
       # run tests!
-      - run: mvn integration-test validate
+      - run: mvn integration-test validate 
 
       # Surefire reports are stored in the parent project to keep CircleCI happy
       - store_test_results:

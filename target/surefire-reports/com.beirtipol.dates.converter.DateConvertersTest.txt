@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.beirtipol.dates.converter.DateConvertersTest
--------------------------------------------------------------------------------
-Tests run: 38344, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.392 s - in com.beirtipol.dates.converter.DateConvertersTest
