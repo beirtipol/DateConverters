@@ -8,7 +8,7 @@ A library for providing conversion between a thing and another thing, specifical
 
 I found myself working on a project that used every conceivable type of Date class, ranging from straight java.util.Calendar to joda Dates, a sprinkling of XMLGregorianCalendar for old JAXB implementations, an occasional usage of java.time.* and then some third-party closed-source libraries that had their own implementation of Dates.
 
-Our biggest problem was we had no consistent way to convert between all these types. There were many DateUtils, DatesUtils, XMLDateUtils but they all did things slightly differently.
+Our biggest problem was we had no consistent way to convert between all these types. There were many DateUtils, DatesUtils, XMLDateUtils but they all did things slightly differently which led to inconsistencies, especially around daylight savings.
 
 ## Why would I use it?
 
@@ -16,16 +16,21 @@ I'd guess you're here because you've also found yourself doing a lot of date con
 
 ## How do I use it?
 
-Currently awaiting approval by Sonatype so that it can be published to maven central. For now, you can just download and run 'mvn install' to deploy to your own local repository. You only need depend on 'date-converters-core'.
+Just add a dependency on date-converters-core in your pom.xml/gradle build file. The project is published to the Sonatype Nexus central repository.
 
-## How is it written?
-
-I used Spring 5 and a bit of Spring Boot to provide simple autowiring. My first iterations of this depended on many interfaces and extensions of interfaces. If you wanted to write a converter for a new type, you were forced to write a converter between your new type and every other existing type. When you wanted to merge multiple type converters together, things got really messy.
+    <dependency>
+        <groupId>com.beirtipol</groupId>
+        <artifactId>date-converters-core</artifactId>
+        <version>1.0-RELEASE</version>
+    </dependency>
+    
 
 ## How does it work?
 
 Simple! Out of the box, you get a converter for all core java 8+ Date types:
 
+* java.util.Calendar
+* java.util.GregorianCalendar
 * java.util.Date
 * java.sql.Date
 * java.sql.Timestamp
