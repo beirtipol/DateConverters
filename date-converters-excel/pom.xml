@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.beirtipol</groupId>
 		<artifactId>date-converters</artifactId>
-		<version>1.0-RELEASE</version>
+		<version>1.1-BETA</version>
 	</parent>
 	<artifactId>date-converters-excel</artifactId>
 	<name>Excel (Double) Date Converters</name>
