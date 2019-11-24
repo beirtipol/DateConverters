@@ -21,7 +21,7 @@ jobs:
       - checkout
 
       # run tests!
-      - run: mvn integration-test validate 
+      - run: mvn integration-test validate -Dmaven.javadoc.skip=true
 
       # Surefire reports are stored in the parent project to keep CircleCI happy
       - store_test_results:
