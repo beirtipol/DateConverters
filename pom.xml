@@ -198,5 +198,6 @@
 		<module>date-converters-sample-extension</module>
 		<module>date-converters-core-tests</module>
 		<module>date-converters-reporting</module>
+		<module>date-converters-excel</module>
 	</modules>
 </project>
