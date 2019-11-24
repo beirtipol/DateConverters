@@ -67,7 +67,7 @@ public class LocalDateConverters {
 	@Bean
 	@Converter(from = java.sql.Date.class, to = LocalDate.class)
 	public Function<java.sql.Date, LocalDate> SQLDateToLocalDate() {
-		return from -> LocalDate.ofInstant(Instant.ofEpochMilli(from.getTime()), ThreeTenDates.UTC);
+		return from -> Instant.ofEpochMilli(from.getTime()).atZone(ThreeTenDates.UTC).toLocalDate();
 	}
 
 	@Bean
