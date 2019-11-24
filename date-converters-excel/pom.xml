@@ -6,7 +6,7 @@
 		<version>1.1-BETA</version>
 	</parent>
 	<artifactId>date-converters-excel</artifactId>
-	<name>Excel (Double) Date Converters</name>
+	<name>Date Converters Excel Extension</name>
 	<description>Provides conversion between excel (double) dates and other types</description>
 	<dependencies>
 		<dependency>
