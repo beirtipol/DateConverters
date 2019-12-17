@@ -97,3 +97,8 @@ The @Bean simply makes the method discoverable by Spring. The @Converter annotat
 
 ## This @Converter stuff looks pretty generic, you could use it for things other than dates?
 Yeah, I could. I don't have a good use-case right now though! You should be able to provide any conversion you want though.
+
+## How do you keep an eye on performance
+When you're using libraries like this in financial software (cos really, where else will you have such an array of different date types), then you need to make sure it's fast. I've been using YourKit for years and they kindly offered me an open source license for giving them a mention.
+
+![Yourkit Logo](https://www.yourkit.com/images/yklogo.png)
