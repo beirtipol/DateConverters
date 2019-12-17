@@ -1,3 +1,5 @@
+CircleCI Build: [![CircleCI](https://circleci.com/gh/beirtipol/date-converters.svg?style=svg)](https://circleci.com/gh/beirtipol/date-converters)
+
 # FAQ
 
 ## What is this?
