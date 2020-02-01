@@ -4,8 +4,18 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-core-tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-core-tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-core-tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-excel" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-excel/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-excel/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-reporting" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-reporting/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-reporting/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/date-converters-sample-extension" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-sample-extension/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/date-converters-sample-extension/src/main/resources" charset="UTF-8" />
   </component>
 </project>

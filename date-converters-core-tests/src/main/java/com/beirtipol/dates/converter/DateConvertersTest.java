@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2020  https://github.com/beirtipol
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.beirtipol.dates.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -101,7 +118,7 @@ public class DateConvertersTest {
         // setup() is not called before this provider is invoked
         setup();
         Supplier<Stream<Object>> valueStream = () -> expectedResults.values().stream();
-        Supplier<Stream<String>> timezoneStream = () -> systemTimeZones();
+        Supplier<Stream<String>> timezoneStream = this::systemTimeZones;
         return expectedResults.keySet().stream()// Every Class
                 .flatMap(key -> valueStream.get().map(value -> Arguments.of(value, key)))// Every Value
                 .flatMap(arg -> timezoneStream.get().map(tz -> Arguments.of(arg.get()[0], arg.get()[1], tz)));// Every TimeZone

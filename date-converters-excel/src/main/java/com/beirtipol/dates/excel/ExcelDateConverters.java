@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2020  https://github.com/beirtipol
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.beirtipol.dates.excel;
 
 import java.sql.Timestamp;
@@ -33,7 +50,7 @@ public class ExcelDateConverters {
 	@Bean
 	@Converter(from = Double.class, to = LocalDateTime.class)
 	public Function<Double, LocalDateTime> DoubleToLocalDateTime() {
-		return from -> DateUtil.getLocalDateTime(from);
+		return DateUtil::getLocalDateTime;
 	}
 
 	@Bean
@@ -87,7 +104,7 @@ public class ExcelDateConverters {
 	@Bean
 	@Converter(from = LocalDate.class, to = Double.class)
 	public Function<LocalDate, Double> LocalDateToDouble() {
-		return from -> DateUtil.getExcelDate(from);
+		return DateUtil::getExcelDate;
 	}
 
 	@Bean
@@ -99,7 +116,7 @@ public class ExcelDateConverters {
 	@Bean
 	@Converter(from = LocalDateTime.class, to = Double.class)
 	public Function<LocalDateTime, Double> LocalDateTimeToDouble() {
-		return from -> DateUtil.getExcelDate(from);
+		return DateUtil::getExcelDate;
 	}
 
 	@Bean
