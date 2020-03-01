@@ -97,6 +97,18 @@ You need to write a method in a spring-annotated class (like @Component) which f
     
 The @Bean simply makes the method discoverable by Spring. The @Converter annotation allows the com.beirtipol.dates.Converter class to determine what the 'from' and 'to' types are so that it can index them and find a converter when you ask it to do a 'from'.
 
+## What about dates before the Julian -> Gregorian cutover?
+Now you're talking. This library currently does not handle these very well. If you are attempting to convert between java.util.* and java.time.* for dates pre 1582, things get very weird. You'll notice days being added or subtracted. This is due to the many changes that happened before time got standardised. 
+
+I would suggest you avoid converting dates that are that old. If you really need to use dates that old, you should work purely with a java.time.* and avoid any conversions to/from java.util.*
+
+For more 'light' reading,
+- https://www.timeanddate.com/calendar/julian-calendar.html
+- https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html
+- This snippet from the source code of java.util.GregorianCalendar:
+"Likewise, with the Julian calendar, we assume a consistent 4-year leap year rule, even though the historical pattern of leap years is irregular, being every 3 years from 45 BCE through 9 BCE, then every 4 years from 8 CE onwards, with no leap years in-between.  Thus date computations and functions such as isLeapYear() are not intended to be historically accurate."
+    
+
 ## This @Converter stuff looks pretty generic, you could use it for things other than dates?
 Yeah, I could. I don't have a good use-case right now though! You should be able to provide any conversion you want though.
 
