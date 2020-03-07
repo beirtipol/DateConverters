@@ -17,17 +17,12 @@
 
 package com.beirtipol.dates;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
+import com.beirtipol.dates.converter.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -38,11 +33,10 @@ import org.springframework.core.type.MethodMetadata;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
-import com.beirtipol.dates.converter.LocalDateConverters;
-import com.beirtipol.dates.converter.LocalDateTimeConverters;
-import com.beirtipol.dates.converter.UtilDateConverters;
-import com.beirtipol.dates.converter.XMLDateConverters;
-import com.beirtipol.dates.converter.ZonedDateTimeConverters;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * {@link Converters} will gather all bean methods which declare the annotation {@link Converter} and index them by the
@@ -68,28 +62,26 @@ public class Converters implements BeanPostProcessor {
     @Autowired
     private BeanFactory beanFactory;
 
-    private Map<ConverterKey, Function> converters = new HashMap<>();
+    private final Map<ConverterKey, Function> converters = new HashMap<>();
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
         if (registry.containsBeanDefinition(beanName)) {
             BeanDefinition beanDefinition = registry.getBeanDefinition(beanName);
-            if (beanDefinition instanceof AnnotatedBeanDefinition) {
-                if (beanDefinition.getSource() instanceof MethodMetadata) {
-                    MethodMetadata beanMethod = (MethodMetadata) beanDefinition.getSource();
-                    String annotationType = Converter.class.getName();
-                    if (beanMethod.isAnnotated(annotationType)) {
-                        MultiValueMap<String, Object> attribs = beanMethod.getAllAnnotationAttributes(annotationType);
-                        assert attribs != null;
-                        Class<?>[] froms = (Class<?>[]) attribs.get("from").get(0);
-                        Class<?> to = (Class<?>) attribs.get("to").get(0);
-                        Arrays.stream(froms).forEach(from -> {
-                            ConverterKey key = new ConverterKey(from, to);
-                            converters.put(key, (Function) bean);
-                        });
+            if (beanDefinition.getSource() instanceof MethodMetadata) {
+                MethodMetadata beanMethod = (MethodMetadata) beanDefinition.getSource();
+                String annotationType = Converter.class.getName();
+                if (beanMethod.isAnnotated(annotationType)) {
+                    MultiValueMap<String, Object> attribs = beanMethod.getAllAnnotationAttributes(annotationType);
+                    assert attribs != null;
+                    Class<?>[] froms = (Class<?>[]) attribs.get("from").get(0);
+                    Class<?> to = (Class<?>) attribs.get("to").get(0);
+                    Arrays.stream(froms).forEach(from -> {
+                        ConverterKey key = new ConverterKey(from, to);
+                        converters.put(key, (Function) bean);
+                    });
 
-                    }
                 }
             }
         }
@@ -112,10 +104,8 @@ public class Converters implements BeanPostProcessor {
         if (converter == null) {
             throw new NoSuchBeanDefinitionException(to, String.format("No bean available to convert from %s to %s", from.getClass(), to));
         }
-        if (fromClass != from.getClass()) {
-        	if(LOG.isDebugEnabled()) {
-				LOG.warn(String.format("No direct converter found between %s and %s. Attempting to convert from %s to %s instead.", from.getClass(), to, fromClass, to));
-			}
+        if (fromClass != from.getClass() && LOG.isDebugEnabled()) {
+            LOG.debug(String.format("No direct converter found between %s and %s. Attempting to convert from %s to %s instead.", from.getClass(), to, fromClass, to));
         }
         return (T) converter.apply(from);
     }

@@ -77,6 +77,20 @@ Here's how you'd autowire a simple application. You can see a full example in th
 
 I'm glad you asked. If you asked, it means you probably know what you're doing already, which is a great start. TimeZone conversion is arbitrary at best. All of the core conversion classes will keep the 'Instant' where possible when converting between dates. i.e. if the 'from' and 'to' Class support a Timezone, they will represent the same point on the timeline. If however, you are converting from a timezoned object to a local object, the 'from' date is converted to UTC and then the timezone is stripped off. This may not be what you want to do, in which case you should provide your own implementation. More on that later.
 
+## What about dates before 1582?
+
+Now we're talking. I've tried to implement a 'sane' conversion for dates before this time but it becomes very messy and very difficult very quickly.
+
+- Borders changed, a lot. TimeZones as we know them did not exist
+- Leap years were applied differently depending on the country. This means that 'LocalDate' becomes quite meaningless if you attempt to convert it to a date that has 'timezone' information.
+
+My suggestions for dealing with historic dates are:
+
+- Avoid them. 
+- If you cannot avoid them, stick to a single date library.
+- Do not perform calculations (like adding or removing days) as things like the Leap year issue will hit you.
+- Just pretend they didn't exist.
+
 ## What about tests?
 
 This project makes heavy use of JUnit 5 @ParameterisedTests. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.

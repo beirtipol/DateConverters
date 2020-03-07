@@ -14,8 +14,8 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
 
     dependencies:
-      override: 
-      - mvn install -DskipTests -Dmaven.javadoc.skip=true
+      override:
+        - mvn install -DskipTests -Dmaven.javadoc.skip=true
 
     steps:
       - checkout

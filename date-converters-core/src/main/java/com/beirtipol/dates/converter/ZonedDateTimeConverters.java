@@ -17,21 +17,22 @@
 
 package com.beirtipol.dates.converter;
 
-import java.sql.Timestamp;
-import java.time.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.function.Function;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-
+import com.beirtipol.dates.Converter;
+import com.beirtipol.dates.ThreeTenDates;
 import com.beirtipol.dates.UtilDates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import com.beirtipol.dates.Converter;
-import com.beirtipol.dates.ThreeTenDates;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.function.Function;
 
 /**
  * This always converts to a {@link ZonedDateTime} which is set to UTC, allowing you to convert it to the TimeZone of
@@ -41,6 +42,7 @@ import com.beirtipol.dates.ThreeTenDates;
  */
 @Component
 public class ZonedDateTimeConverters {
+    private final ThreadLocal<Calendar> calendar = new ThreadLocal<>();
 
     @Bean
     @Converter(from = XMLGregorianCalendar.class, to = ZonedDateTime.class)
@@ -74,19 +76,24 @@ public class ZonedDateTimeConverters {
     @Bean
     @Converter(from = java.util.Date.class, to = ZonedDateTime.class)
     public Function<Date, ZonedDateTime> UtilDateToZonedDateTime() {
-        return from -> from.toInstant().atZone(ThreeTenDates.UTC);
+        return from -> {
+            Calendar cal = Calendar.getInstance();
+            cal.clear();
+            cal.setTime(from);
+            return CalendarToZonedDateTime().apply(cal);
+        };
     }
 
     @Bean
     @Converter(from = {Calendar.class, GregorianCalendar.class}, to = ZonedDateTime.class)
     public Function<Calendar, ZonedDateTime> CalendarToZonedDateTime() {
-        return from -> from.toInstant().atZone(ThreeTenDates.UTC);
+        return from -> from.getTime().toInstant().atZone(ThreeTenDates.UTC);
     }
 
     @Bean
     @Converter(from = java.sql.Date.class, to = ZonedDateTime.class)
     public Function<java.sql.Date, ZonedDateTime> SQLDateToZonedDateTime() {
-		return from -> ZonedDateTime.ofInstant(Instant.ofEpochMilli(from.getTime()), ThreeTenDates.UTC);
+        return from -> UtilDateToZonedDateTime().apply(from);
     }
 
     @Bean

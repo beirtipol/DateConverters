@@ -17,18 +17,16 @@
 
 package com.mydate.dates;
 
-import org.springframework.context.annotation.ComponentScan;
-
 import com.beirtipol.dates.Converters;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * You are required to include this class in your @ComponentScan in order to ensure correct
  * initialization
- * 
- * @author beirtipol@gmail.com
  *
+ * @author beirtipol@gmail.com
  */
-@ComponentScan(basePackageClasses = { Converters.class, MyDateConverters.class })
+@ComponentScan(basePackageClasses = {Converters.class, MyDateConverters.class})
 public class MyDatesConfiguration {
 
 }

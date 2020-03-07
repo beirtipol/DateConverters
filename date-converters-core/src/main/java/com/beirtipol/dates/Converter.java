@@ -28,15 +28,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Converter {
-	/**
-	 *
-	 * @return an array of Classes of objects which this Function can convert 'from'. You need to be careful to ensure all classes are in the same type hierarchy or you will end up with runtime Class exceptions
-	 */
-	Class<?>[] from();
+    /**
+     * @return an array of Classes of objects which this Function can convert 'from'. You need to be careful to ensure all classes are in the same type hierarchy or you will end up with runtime Class exceptions
+     */
+    Class<?>[] from();
 
-	/**
-	 *
-	 * @return the class of object which this Function can convert 'to'
-	 */
-	Class<?> to();
+    /**
+     * @return the class of object which this Function can convert 'to'
+     */
+    Class<?> to();
 }

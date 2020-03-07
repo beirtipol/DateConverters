@@ -17,8 +17,13 @@
 
 package com.beirtipol.dates.converter;
 
+import com.beirtipol.dates.Converter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -26,14 +31,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.function.Function;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import com.beirtipol.dates.Converter;
-import com.beirtipol.dates.ThreeTenDates;
 
 /**
  * As {@link LocalDateTime} does not have any TimeZone information, it does not try to do anything clever with the
@@ -43,6 +40,8 @@ import com.beirtipol.dates.ThreeTenDates;
  */
 @Component
 public class LocalDateTimeConverters {
+    @Autowired
+    private ZonedDateTimeConverters zonedDateTimeConverters;
 
     @Bean
     @Converter(from = XMLGregorianCalendar.class, to = LocalDateTime.class)
@@ -71,19 +70,19 @@ public class LocalDateTimeConverters {
     @Bean
     @Converter(from = java.util.Date.class, to = LocalDateTime.class)
     public Function<Date, LocalDateTime> UtilDateToLocalDateTime() {
-        return from -> from.toInstant().atZone(ThreeTenDates.UTC).toLocalDateTime();
+        return from -> zonedDateTimeConverters.UtilDateToZonedDateTime().apply(from).toLocalDateTime();
     }
 
     @Bean
     @Converter(from = {Calendar.class, GregorianCalendar.class}, to = LocalDateTime.class)
     public Function<Calendar, LocalDateTime> CalendarToLocalDateTime() {
-        return from -> from.toInstant().atZone(ThreeTenDates.UTC).toLocalDateTime();
+        return from -> zonedDateTimeConverters.CalendarToZonedDateTime().apply(from).toLocalDateTime();
     }
 
     @Bean
     @Converter(from = java.sql.Date.class, to = LocalDateTime.class)
     public Function<java.sql.Date, LocalDateTime> SQLDateToLocalDateTime() {
-        return from -> LocalDateTime.ofInstant(Instant.ofEpochMilli(from.getTime()), ThreeTenDates.UTC);
+        return from -> UtilDateToLocalDateTime().apply(from);
     }
 
     @Bean

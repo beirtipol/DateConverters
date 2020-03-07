@@ -17,6 +17,13 @@
 
 package com.beirtipol.dates.converter;
 
+import com.beirtipol.dates.Converter;
+import com.beirtipol.dates.ThreeTenDates;
+import com.beirtipol.dates.UtilDates;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,15 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.function.Function;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import com.beirtipol.dates.Converter;
-import com.beirtipol.dates.ThreeTenDates;
-import com.beirtipol.dates.UtilDates;
-
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * Contains converters for {@link Calendar}. It defaults to using GregorianCalendar in all instances. The author does
@@ -59,6 +57,7 @@ public class CalendarConverters {
             return result;
         };
     }
+
 
     @Bean
     @Converter(from = LocalDate.class, to = Calendar.class)
