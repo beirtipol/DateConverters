@@ -37,6 +37,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * Provide base class for testing conversion with Millisecond precision
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith({SpringExtension.class})
 @SpringBootTest

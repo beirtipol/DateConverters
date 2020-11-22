@@ -42,6 +42,14 @@ Simple! Out of the box, you get a converter for all core java 8+ Date types:
 * `java.time.LocalDateTime`
 * `java.time.ZonedDateTime`
 
+In addition, extensions are provided for:
+
+* Excel `java.util.Double`
+* Joda:
+    * `org.joda.time.LocalDate`
+    * `org.joda.time.LocalDateTime`
+    * `org.joda.time.DateTime`
+
 You just `@Autowire` an `org.beirtipol.Converters` in to your class and ask it to convert 'from' whatever type in to whatever type you want. Due to some magic, you get type-safe conversion and null-safety (if you give null, you get null, your problem).
 
 e.g.
@@ -93,7 +101,7 @@ My suggestions for dealing with historic dates are:
 
 ## What about tests?
 
-This project makes heavy use of JUnit 5 `@ParameterizedTest`. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.
+This project makes heavy use of JUnit 5 `@ParameterizedTest`. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) and [DateTimeConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateTimeConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.
 
 Tests are generated for each combination of 'from' Object, 'to' Class and Timezone in order to verify that converting works in the same way regardless of what timezone you are in. Last time I checked, **38,344** Unit tests were generated to run across all these iterations. While a sheer number of tests doesn't guarantee that this code is perfect, it does mean that each line is hit thousands of times in different ways to try all known combinations of state.  
 
