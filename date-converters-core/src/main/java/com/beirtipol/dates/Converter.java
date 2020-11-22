@@ -17,6 +17,9 @@
 
 package com.beirtipol.dates;
 
+import lombok.With;
+import org.springframework.context.annotation.Bean;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,7 +30,9 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Bean
 public @interface Converter {
+
     /**
      * @return an array of Classes of objects which this Function can convert 'from'. You need to be careful to ensure all classes are in the same type hierarchy or you will end up with runtime Class exceptions
      */

@@ -43,49 +43,41 @@ public class LocalDateConverters {
     @Autowired
     private ZonedDateTimeConverters zonedDateTimeConverters;
 
-    @Bean
     @Converter(from = XMLGregorianCalendar.class, to = LocalDate.class)
     public Function<XMLGregorianCalendar, LocalDate> XMLDateToLocalDate() {
         return from -> ZonedDateTimeToLocalDate().apply(from.toGregorianCalendar().toZonedDateTime());
     }
 
-    @Bean
     @Converter(from = LocalDate.class, to = LocalDate.class)
     public Function<LocalDate, LocalDate> LocalDateToLocalDate() {
         return from -> from;
     }
 
-    @Bean
     @Converter(from = ZonedDateTime.class, to = LocalDate.class)
     public Function<ZonedDateTime, LocalDate> ZonedDateTimeToLocalDate() {
         return ZonedDateTime::toLocalDate;
     }
 
-    @Bean
     @Converter(from = LocalDateTime.class, to = LocalDate.class)
     public Function<LocalDateTime, LocalDate> LocalDateTimeToLocalDate() {
         return LocalDateTime::toLocalDate;
     }
 
-    @Bean
     @Converter(from = java.util.Date.class, to = LocalDate.class)
     public Function<Date, LocalDate> UtilDateToLocalDate() {
         return from -> zonedDateTimeConverters.UtilDateToZonedDateTime().apply(from).toLocalDate();
     }
 
-    @Bean
     @Converter(from = {Calendar.class, GregorianCalendar.class}, to = LocalDate.class)
     public Function<Calendar, LocalDate> CalendarToLocalDate() {
         return from -> zonedDateTimeConverters.CalendarToZonedDateTime().apply(from).toLocalDate();
     }
 
-    @Bean
     @Converter(from = java.sql.Date.class, to = LocalDate.class)
     public Function<java.sql.Date, LocalDate> SQLDateToLocalDate() {
         return from -> zonedDateTimeConverters.SQLDateToZonedDateTime().apply(from).toLocalDate();
     }
 
-    @Bean
     @Converter(from = Timestamp.class, to = LocalDate.class)
     public Function<Timestamp, LocalDate> SQLTimestampToLocalDate() {
         return from -> UtilDateToLocalDate().apply(from);

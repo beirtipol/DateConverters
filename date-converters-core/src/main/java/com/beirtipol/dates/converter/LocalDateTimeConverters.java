@@ -43,49 +43,41 @@ public class LocalDateTimeConverters {
     @Autowired
     private ZonedDateTimeConverters zonedDateTimeConverters;
 
-    @Bean
     @Converter(from = XMLGregorianCalendar.class, to = LocalDateTime.class)
     public Function<XMLGregorianCalendar, LocalDateTime> XMLDateToLocalDateTime() {
         return from -> ZonedDateTimeToLocalDateTime().apply(from.toGregorianCalendar().toZonedDateTime());
     }
 
-    @Bean
     @Converter(from = LocalDate.class, to = LocalDateTime.class)
     public Function<LocalDate, LocalDateTime> LocalDateToLocalDateTime() {
         return LocalDate::atStartOfDay;
     }
 
-    @Bean
     @Converter(from = ZonedDateTime.class, to = LocalDateTime.class)
     public Function<ZonedDateTime, LocalDateTime> ZonedDateTimeToLocalDateTime() {
         return ZonedDateTime::toLocalDateTime;
     }
 
-    @Bean
     @Converter(from = LocalDateTime.class, to = LocalDateTime.class)
     public Function<LocalDateTime, LocalDateTime> LocalDateTimeTimeToLocalDateTime() {
         return from -> from;
     }
 
-    @Bean
     @Converter(from = java.util.Date.class, to = LocalDateTime.class)
     public Function<Date, LocalDateTime> UtilDateToLocalDateTime() {
         return from -> zonedDateTimeConverters.UtilDateToZonedDateTime().apply(from).toLocalDateTime();
     }
 
-    @Bean
     @Converter(from = {Calendar.class, GregorianCalendar.class}, to = LocalDateTime.class)
     public Function<Calendar, LocalDateTime> CalendarToLocalDateTime() {
         return from -> zonedDateTimeConverters.CalendarToZonedDateTime().apply(from).toLocalDateTime();
     }
 
-    @Bean
     @Converter(from = java.sql.Date.class, to = LocalDateTime.class)
     public Function<java.sql.Date, LocalDateTime> SQLDateToLocalDateTime() {
         return from -> UtilDateToLocalDateTime().apply(from);
     }
 
-    @Bean
     @Converter(from = Timestamp.class, to = LocalDateTime.class)
     public Function<Timestamp, LocalDateTime> SQLTimestampToLocalDateTime() {
         return from -> UtilDateToLocalDateTime().apply(from);

@@ -44,7 +44,6 @@ import java.util.function.Function;
 public class ZonedDateTimeConverters {
     private final ThreadLocal<Calendar> calendar = new ThreadLocal<>();
 
-    @Bean
     @Converter(from = XMLGregorianCalendar.class, to = ZonedDateTime.class)
     public Function<XMLGregorianCalendar, ZonedDateTime> XMLDateToZonedDateTime() {
         return from -> {
@@ -54,26 +53,22 @@ public class ZonedDateTimeConverters {
         };
     }
 
-    @Bean
     @Converter(from = LocalDate.class, to = ZonedDateTime.class)
     public Function<LocalDate, ZonedDateTime> LocalDateToZonedDateTime() {
         return from -> from.atStartOfDay().atZone(ThreeTenDates.UTC);
     }
 
-    @Bean
     @Converter(from = ZonedDateTime.class, to = ZonedDateTime.class)
     public Function<ZonedDateTime, ZonedDateTime> ZonedDateTimeToZonedDateTime() {
         return from -> from;
     }
 
-    @Bean
     @Converter(from = LocalDateTime.class, to = ZonedDateTime.class)
     public Function<LocalDateTime, ZonedDateTime> LocalDateTimeToZonedDateTime() {
         return from -> from.atZone(ThreeTenDates.UTC);
 
     }
 
-    @Bean
     @Converter(from = java.util.Date.class, to = ZonedDateTime.class)
     public Function<Date, ZonedDateTime> UtilDateToZonedDateTime() {
         return from -> {
@@ -84,19 +79,16 @@ public class ZonedDateTimeConverters {
         };
     }
 
-    @Bean
     @Converter(from = {Calendar.class, GregorianCalendar.class}, to = ZonedDateTime.class)
     public Function<Calendar, ZonedDateTime> CalendarToZonedDateTime() {
         return from -> from.getTime().toInstant().atZone(ThreeTenDates.UTC);
     }
 
-    @Bean
     @Converter(from = java.sql.Date.class, to = ZonedDateTime.class)
     public Function<java.sql.Date, ZonedDateTime> SQLDateToZonedDateTime() {
         return from -> UtilDateToZonedDateTime().apply(from);
     }
 
-    @Bean
     @Converter(from = Timestamp.class, to = ZonedDateTime.class)
     public Function<Timestamp, ZonedDateTime> SQLTimestampToZonedDateTime() {
         return from -> UtilDateToZonedDateTime().apply(from);

@@ -8,7 +8,7 @@ A library for providing conversion between a thing and another thing, specifical
 
 ## Why did you write it?
 
-I found myself working on a project that used every conceivable type of Date class, ranging from straight java.util.Calendar to joda Dates, a sprinkling of XMLGregorianCalendar for old JAXB implementations, an occasional usage of java.time.* and then some third-party closed-source libraries that had their own implementation of Dates.
+I found myself working on a project that used every conceivable type of Date class, ranging from straight `java.util.Calendar` to joda Dates, a sprinkling of `XMLGregorianCalendar` for old JAXB implementations, an occasional usage of `java.time.*` and then some third-party closed-source libraries that had their own implementation of Dates.
 
 Our biggest problem was we had no consistent way to convert between all these types. There were many DateUtils, DatesUtils, XMLDateUtils but they all did things slightly differently which led to inconsistencies, especially around daylight savings.
 
@@ -32,17 +32,17 @@ This project is built using JDK11 but the code is intended to be compatible with
 
 Simple! Out of the box, you get a converter for all core java 8+ Date types:
 
-* java.util.Calendar
-* java.util.GregorianCalendar
-* java.util.Date
-* java.sql.Date
-* java.sql.Timestamp
-* javax.xml.datatype.XMLGregorianCalendar
-* java.time.LocalDate
-* java.time.LocalDateTime
-* java.time.ZonedDateTime
+* `java.util.Calendar`
+* `java.util.GregorianCalendar`
+* `java.util.Date`
+* `java.sql.Date`
+* `java.sql.Timestamp`
+* `javax.xml.datatype.XMLGregorianCalendar`
+* `java.time.LocalDate`
+* `java.time.LocalDateTime`
+* `java.time.ZonedDateTime`
 
-You just @Autowire an org.beirtipol.Converters in to your class and ask it to convert 'from' whatever type in to whatever type you want. Due to some magic, you get type-safe conversion and null-safety (if you give null, you get null, your problem).
+You just `@Autowire` an `org.beirtipol.Converters` in to your class and ask it to convert 'from' whatever type in to whatever type you want. Due to some magic, you get type-safe conversion and null-safety (if you give null, you get null, your problem).
 
 e.g.
 
@@ -93,7 +93,7 @@ My suggestions for dealing with historic dates are:
 
 ## What about tests?
 
-This project makes heavy use of JUnit 5 @ParameterisedTests. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.
+This project makes heavy use of JUnit 5 `@ParameterizedTest`. This allows the test class to be quite minimal, but easily extended. Have a look at [DateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-core-tests/src/main/java/com/beirtipol/dates/converter/DateConvertersTest.java) for the base implementation and [MyDateConvertersTest](https://github.com/beirtipol/date-converters/blob/master/date-converters-sample-extension/src/test/java/com/mydate/dates/MyDateConvertersTest.java) for a sample extension.
 
 Tests are generated for each combination of 'from' Object, 'to' Class and Timezone in order to verify that converting works in the same way regardless of what timezone you are in. Last time I checked, **38,344** Unit tests were generated to run across all these iterations. While a sheer number of tests doesn't guarantee that this code is perfect, it does mean that each line is hit thousands of times in different ways to try all known combinations of state.  
 
@@ -101,15 +101,14 @@ Jacoco is set up to check coverage across all implementations of converters. Oth
 
 ## How do I provide my own implementation of a converter?
 
-You need to write a method in a spring-annotated class (like @Component) which follows this signature:
+You need to write a method in a spring-annotated class (like `@Component`) which follows this signature:
 
-    @Bean
     @Converter(from = SomeDateType.class, to = SomeOtherDateType.class)
     public Function<SomeDateType, SomeOtherDateType> SomeDateTypeToSomeOtherDateType() {
         return from -> //convert 'from' in to 'to';
     }
     
-The @Bean simply makes the method discoverable by Spring. The @Converter annotation allows the com.beirtipol.dates.Converter class to determine what the 'from' and 'to' types are so that it can index them and find a converter when you ask it to do a 'from'.
+The `@Converter` annotation allows the com.beirtipol.dates.Converter class to determine what the 'from' and 'to' types are so that it can index them and find a converter when you ask it to do a 'from'. This annotation is also a Spring `@Bean` which makes it discoverable
 
 ## What about dates before the Julian -> Gregorian cutover?
 Now you're talking. This library currently does not handle these very well. If you are attempting to convert between java.util.* and java.time.* for dates pre 1582, things get very weird. You'll notice days being added or subtracted. This is due to the many changes that happened before time got standardised. 

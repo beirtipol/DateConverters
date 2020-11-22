@@ -22,6 +22,7 @@ import com.beirtipol.dates.ThreeTenDates;
 import com.beirtipol.dates.UtilDates;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 import java.util.function.Supplier;
@@ -84,6 +86,16 @@ public class DateConvertersTest {
         expectedResults.put(XMLGregorianCalendar.class, expectedXMLDate);
         expectedResults.put(Timestamp.class, expectedSQLTimestamp);
         expectedResults.put(Calendar.class, expectedGregorianCalendar);
+    }
+
+    @Test
+    public void testThing() throws Exception{
+        TimeZone.setDefault(TimeZone.getTimeZone("India Standard Time"));
+        // input format: dd/MM/yy
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yy");
+// output format: yyyy-MM-dd
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(formatter.format(parser.parse("12/1/20"))); // 0020-11-01
     }
 
     /**

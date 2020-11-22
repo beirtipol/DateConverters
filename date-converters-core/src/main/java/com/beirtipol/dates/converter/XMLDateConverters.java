@@ -59,37 +59,31 @@ public class XMLDateConverters {
         }
     }
 
-    @Bean
     @Converter(from = XMLGregorianCalendar.class, to = XMLGregorianCalendar.class)
     public Function<XMLGregorianCalendar, XMLGregorianCalendar> XMLDateToXMLGregorianCalendar() {
         return from -> ZonedDateTimeToXMLGregorianCalendar().apply(from.toGregorianCalendar().toZonedDateTime());
     }
 
-    @Bean
     @Converter(from = LocalDate.class, to = XMLGregorianCalendar.class)
     public Function<LocalDate, XMLGregorianCalendar> LocalDateToXMLGregorianCalendar() {
         return from -> LocalDateTimeToXMLGregorianCalendar().apply(from.atStartOfDay());
     }
 
-    @Bean
     @Converter(from = ZonedDateTime.class, to = XMLGregorianCalendar.class)
     public Function<ZonedDateTime, XMLGregorianCalendar> ZonedDateTimeToXMLGregorianCalendar() {
         return from -> dt.newXMLGregorianCalendar(GregorianCalendar.from(from));
     }
 
-    @Bean
     @Converter(from = LocalDateTime.class, to = XMLGregorianCalendar.class)
     public Function<LocalDateTime, XMLGregorianCalendar> LocalDateTimeToXMLGregorianCalendar() {
         return from -> ZonedDateTimeToXMLGregorianCalendar().apply(from.atZone(ThreeTenDates.UTC));
     }
 
-    @Bean
     @Converter(from = java.util.Date.class, to = XMLGregorianCalendar.class)
     public Function<Date, XMLGregorianCalendar> UtilDateToXMLGregorianCalendar() {
         return from -> dt.newXMLGregorianCalendar(GregorianCalendar.from(zonedDateTimeConverter.UtilDateToZonedDateTime().apply(from)));
     }
 
-    @Bean
     @Converter(from = {Calendar.class, GregorianCalendar.class}, to = XMLGregorianCalendar.class)
     public Function<Calendar, XMLGregorianCalendar> CalendarToXMLGregorianCalendar() {
         return from -> {
@@ -99,13 +93,11 @@ public class XMLDateConverters {
         };
     }
 
-    @Bean
     @Converter(from = java.sql.Date.class, to = XMLGregorianCalendar.class)
     public Function<java.sql.Date, XMLGregorianCalendar> SQLDateToXMLGregorianCalendar() {
         return from -> dt.newXMLGregorianCalendar(GregorianCalendar.from(zonedDateTimeConverter.SQLDateToZonedDateTime().apply(from)));
     }
 
-    @Bean
     @Converter(from = Timestamp.class, to = XMLGregorianCalendar.class)
     public Function<Timestamp, XMLGregorianCalendar> SQLTimestampToXMLGregorianCalendar() {
         return from -> UtilDateToXMLGregorianCalendar().apply(from);
