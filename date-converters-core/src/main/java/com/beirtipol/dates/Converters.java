@@ -58,9 +58,9 @@ import java.util.function.Function;
 @ComponentScan
 @Component
 public class Converters implements BeanPostProcessor {
-    private static final Logger LOG = LoggerFactory.getLogger(Converters.class);
+    private static final Logger      LOG = LoggerFactory.getLogger(Converters.class);
     @Autowired
-    private BeanFactory beanFactory;
+    private              BeanFactory beanFactory;
 
     private final Map<ConverterKey, Function> converters = new HashMap<>();
 

@@ -26,7 +26,7 @@ public class ConverterKey {
 
     public ConverterKey(Class<?> from, Class<?> to) {
         this.from = from;
-        this.to = to;
+        this.to   = to;
     }
 
     public Class<?> getFrom() {

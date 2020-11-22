@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="date-converters-excel" />
-        <module name="date-converters-core-tests" />
-        <module name="date-converters-core" />
-        <module name="date-converters-sample-extension" />
         <module name="date-converters-reporting" />
+        <module name="date-converters-core-tests" />
+        <module name="date-converters-excel" />
+        <module name="date-converters-sample-extension" />
+        <module name="date-converters-joda" />
+        <module name="date-converters-core" />
       </profile>
     </annotationProcessing>
   </component>

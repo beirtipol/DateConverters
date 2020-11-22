@@ -225,5 +225,6 @@
         <module>date-converters-core-tests</module>
         <module>date-converters-reporting</module>
         <module>date-converters-excel</module>
+        <module>date-converters-joda</module>
     </modules>
 </project>

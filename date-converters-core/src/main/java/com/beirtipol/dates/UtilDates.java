@@ -26,10 +26,10 @@ import java.util.TimeZone;
  * Utility class for java.util.Date and related classes
  */
 public class UtilDates {
-    public static TimeZone UTC = TimeZone.getTimeZone("UTC");
+    public static TimeZone UTC           = TimeZone.getTimeZone("UTC");
     public static TimeZone EUROPE_LONDON = TimeZone.getTimeZone("Europe/London");
-    public static int YEAR_OFFSET = 1900;
-    public static int MONTH_OFFSET = 1;
+    public static int      YEAR_OFFSET   = 1900;
+    public static int      MONTH_OFFSET  = 1;
 
     /**
      * Helper method for creating java.util.Date with the same syntax and indexing as java.time.ZonedDateTime

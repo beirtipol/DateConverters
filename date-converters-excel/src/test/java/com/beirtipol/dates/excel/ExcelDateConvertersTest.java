@@ -17,7 +17,7 @@
 
 package com.beirtipol.dates.excel;
 
-import com.beirtipol.dates.converter.DateConvertersTest;
+import com.beirtipol.dates.converter.DateTimeConvertersTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -28,11 +28,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith({SpringExtension.class})
 @SpringBootTest
-public class ExcelDateConvertersTest extends DateConvertersTest {
+public class ExcelDateConvertersTest extends DateTimeConvertersTest {
     @Override
     @BeforeEach
     protected void setup() {
         super.setup();
-        expectedResults.put(Double.class, 43709.0d);
+        expectedResults.put(Double.class, 43709.04309555556d);
     }
 }

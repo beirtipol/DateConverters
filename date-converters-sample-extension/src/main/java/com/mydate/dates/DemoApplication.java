@@ -32,14 +32,14 @@ import java.time.ZonedDateTime;
 @SpringBootApplication
 @ComponentScan(basePackageClasses = {Converters.class, MyDateConverters.class})
 public class DemoApplication implements CommandLineRunner {
-    private static final Logger LOG = LoggerFactory.getLogger(DemoApplication.class);
+    private static final Logger     LOG = LoggerFactory.getLogger(DemoApplication.class);
     @Autowired
-    private Converters converters;
+    private              Converters converters;
 
     @Override
     public void run(String... args) {
         ZonedDateTime now = ZonedDateTime.now();
-        if(LOG.isInfoEnabled()) {
+        if (LOG.isInfoEnabled()) {
             LOG.info("Demonstrating Conversions");
             LOG.info("Now (ZonedDateTime): " + now);
             LOG.info("As LocalDate: " + converters.from(now, LocalDate.class));

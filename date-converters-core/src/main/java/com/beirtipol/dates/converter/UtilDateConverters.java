@@ -20,7 +20,6 @@ package com.beirtipol.dates.converter;
 import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.ThreeTenDates;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.xml.datatype.XMLGregorianCalendar;

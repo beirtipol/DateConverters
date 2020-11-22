@@ -19,7 +19,6 @@ package com.beirtipol.dates.converter;
 
 import com.beirtipol.dates.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.xml.datatype.XMLGregorianCalendar;

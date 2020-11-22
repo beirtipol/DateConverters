@@ -21,7 +21,6 @@ import com.beirtipol.dates.Converter;
 import com.beirtipol.dates.Converters;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -111,7 +110,7 @@ public class ExcelDateConverters {
 
     @Converter(from = java.sql.Date.class, to = Double.class)
     public Function<java.sql.Date, Double> SQLDateToDouble() {
-        return from -> DateUtil.getExcelDate(converters.from(from, LocalDate.class));
+        return from -> DateUtil.getExcelDate(converters.from(from, LocalDateTime.class));
     }
 
     @Converter(from = Timestamp.class, to = Double.class)
