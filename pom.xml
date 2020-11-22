@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.beirtipol</groupId>
     <artifactId>date-converters</artifactId>
-    <version>1.2-BETA</version>
+    <version>1.2</version>
     <name>Date Converters Parent Project</name>
     <description>Parent project for all Date Converters modules. Provides standard maven dependency/distribution
         management.
