@@ -1,4 +1,5 @@
 CircleCI Build: [![CircleCI](https://circleci.com/gh/beirtipol/date-converters.svg?style=svg)](https://circleci.com/gh/beirtipol/date-converters)
+![Java CI with Maven](https://github.com/beirtipol/date-converters/workflows/Java%20CI%20with%20Maven/badge.svg)
 
 # FAQ
 
